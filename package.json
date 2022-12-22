@@ -1,0 +1,28 @@
+{
+  "name": "mare-bot",
+  "version": "1.0.0",
+  "description": "A Visual Novel Bot For Hoshi Visual Novel Discord Group",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "node .",
+    "start": "node index.js",
+    "node": "nodemon index.js"
+  },
+  "keywords": [],
+  "author": "Nguyen Tan Hung",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/rest": "^1.5.0",
+    "axios": "^1.2.1",
+    "chalk": "^5.2.0",
+    "discord-api-types": "^0.37.24",
+    "discord.js": "^14.7.1",
+    "dotenv": "^16.0.3",
+    "glob": "^8.0.3",
+    "nodemon": "^2.0.20"
+  },
+  "devDependencies": {
+    "typescript": "^4.9.4"
+  }
+}
