@@ -4,30 +4,34 @@ import {
   ButtonBuilder,
   ButtonStyle,
   EmbedBuilder,
-  Events,
 } from 'discord.js';
-
 const Length = {
-  1: 'Very Short',
-  2: 'Short',
-  3: 'Medium',
-  4: 'Long',
-  5: 'Very Long',
+  '1': 'Very Short',
+  '2': 'Short',
+  '3': 'Medium',
+  '4': 'Long',
+  '5': 'Very Long',
 };
-
-const convertMinuteToHour = (minutes: number) => {
+const convertMinuteToHour = (minutes) => {
   const playtime_hours = Math.floor(minutes / 60);
   const playtime_minutes = minutes % 60;
   return `${playtime_hours.toString()} hours ${playtime_minutes.toString()} minutes`;
 };
-
-export const getVisualNovelDetailEvent = async (interaction) => {
+export const getVisualNovelDetailEvent = async (
+  interaction,
+  method = 'update'
+) => {
   const visualNovelId = interaction.customId.split('_')[1];
   const visualNovel = await queryVisualNovelById(visualNovelId);
   const visualNovelDetail = visualNovel[0];
-
   const choiceButtons = new ActionRowBuilder();
 
+  choiceButtons.addComponents([
+    new ButtonBuilder()
+      .setCustomId(`VisualNovelSearch_${visualNovelId}`)
+      .setLabel('Details')
+      .setStyle(ButtonStyle.Primary),
+  ]);
   choiceButtons.addComponents([
     new ButtonBuilder()
       .setCustomId(`Screenshot_${visualNovelId}`)
@@ -45,7 +49,11 @@ export const getVisualNovelDetailEvent = async (interaction) => {
     .setColor(0x0099ff)
     .setTitle(visualNovelDetail.title)
     .setURL(`https://vndb.org/${visualNovelDetail.id}`)
-    .setDescription(visualNovelDetail.description)
+    .setDescription(
+      visualNovelDetail.description
+        .replace('[spoiler]', '||')
+        .replace('[/spoiler]', '||')
+    )
     .addFields(
       {
         name: 'Alternative title',
@@ -54,7 +62,9 @@ export const getVisualNovelDetailEvent = async (interaction) => {
       { name: '\u200B', value: '\u200B' },
       {
         name: 'Rating',
-        value: visualNovelDetail.rating.toString(),
+        value: visualNovelDetail.rating
+          ? visualNovelDetail.rating.toString()
+          : 'None',
         inline: true,
       },
       {
@@ -67,11 +77,25 @@ export const getVisualNovelDetailEvent = async (interaction) => {
       name: 'Play time',
       value: visualNovelDetail.length_minutes
         ? convertMinuteToHour(visualNovelDetail.length_minutes)
-        : Length[visualNovelDetail.length],
+        : Length[visualNovelDetail.length]
+        ? Length[visualNovelDetail.length.toString()]
+        : 'None',
       inline: true,
     })
     .setImage(visualNovelDetail.image.url)
     .setTimestamp();
 
-  await interaction.reply({ embeds: [embed], components: [choiceButtons] });
+  switch (method) {
+    case 'reply':
+      await interaction.reply({ embeds: [embed], components: [choiceButtons] });
+      break;
+    case 'update':
+      await interaction.update({
+        embeds: [embed],
+        components: [choiceButtons],
+      });
+      break;
+    default:
+      break;
+  }
 };

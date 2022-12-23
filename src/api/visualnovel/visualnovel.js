@@ -8,7 +8,7 @@ export const queryVisualNovelByName = async (visualNovelName) => {
             fields: 'title',
         },
     });
-    return response.data.results.slice(0, 5);
+    return response.data.results;
 };
 export const queryVisualNovelById = async (visualNovelId) => {
     let response = await axios({
@@ -16,7 +16,7 @@ export const queryVisualNovelById = async (visualNovelId) => {
         method: 'post',
         data: {
             filters: ['id', '=', visualNovelId],
-            fields: 'title, alttitle ,image.url, length_minutes, description, rating, image.url, screenshots.url, tags.name, released, screenshots.sexual, length',
+            fields: 'title, alttitle ,image.url, length_minutes, description, rating, image.url, screenshots.url, tags.name, released, screenshots.sexual, length, tags.spoiler, tags.rating',
         },
     });
     return response.data.results;

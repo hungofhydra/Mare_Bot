@@ -1,17 +1,14 @@
 import dotenv from 'dotenv';
+import * as http from 'http';
 dotenv.config();
-import {
-  Client,
-  GatewayIntentBits,
-  ButtonBuilder,
-  ButtonStyle,
-  ModalBuilder,
-  TextInputBuilder,
-  TextInputStyle,
-  Routes,
-} from 'discord.js';
+import { Client, GatewayIntentBits } from 'discord.js';
 
-import { searchVNEvent, getVisualNovelDetailEvent } from './src/event/index.js';
+import {
+  searchVNEvent,
+  getVisualNovelDetailEvent,
+  getVisualNovelScreenshots,
+  getVisualNovelTags,
+} from './src/event/index.js';
 import { refreshSlashCommand } from './src/function/refreshSlashCommand.js';
 
 const client = new Client({
@@ -22,6 +19,7 @@ const client = new Client({
     GatewayIntentBits.DirectMessages,
   ],
 });
+http.createServer((req, res) => res.end('Bot is alive!')).listen(3000);
 
 //Intialize slash command
 await refreshSlashCommand();
@@ -41,8 +39,14 @@ client.on('interactionCreate', async (interaction) => {
         break;
     }
   } else if (interaction.isButton()) {
-    if (interaction.customId.includes('VisualNovelSearch')) {
+    if (interaction.customId.includes('VisualNovelSearchFirstInstance')) {
+      getVisualNovelDetailEvent(interaction, 'reply');
+    } else if (interaction.customId.includes('VisualNovelSearch')) {
       getVisualNovelDetailEvent(interaction);
+    } else if (interaction.customId.includes('Screenshot')) {
+      getVisualNovelScreenshots(interaction);
+    } else if (interaction.customId.includes('Tags')) {
+      getVisualNovelTags(interaction);
     }
   }
 });

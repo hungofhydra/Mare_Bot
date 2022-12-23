@@ -9,7 +9,7 @@ export const queryVisualNovelByName = async (visualNovelName: string) => {
       fields: 'title',
     },
   });
-  return response.data.results.slice(0, 5);
+  return response.data.results;
 };
 
 export const queryVisualNovelById = async (visualNovelId: string) => {
@@ -19,7 +19,7 @@ export const queryVisualNovelById = async (visualNovelId: string) => {
     data: {
       filters: ['id', '=', visualNovelId],
       fields:
-        'title, alttitle ,image.url, length_minutes, description, rating, image.url, screenshots.url, tags.name, released, screenshots.sexual, length',
+        'title, alttitle ,image.url, length_minutes, description, rating, image.url, screenshots.url, tags.name, released, screenshots.sexual, length, tags.spoiler, tags.rating',
     },
   });
   return response.data.results;
