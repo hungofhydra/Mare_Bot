@@ -1,9 +1,11 @@
 import dotenv from 'dotenv';
-import * as http from 'http';
 dotenv.config();
 import { Client, GatewayIntentBits } from 'discord.js';
+import express from 'express';
+const app = express();
 import { searchVNEvent, getVisualNovelDetailEvent, getVisualNovelScreenshots, getVisualNovelTags, } from './src/event/index.js';
 import { refreshSlashCommand } from './src/function/refreshSlashCommand.js';
+const PORT = 3000 || process.env.PORT;
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -12,9 +14,21 @@ const client = new Client({
         GatewayIntentBits.DirectMessages,
     ],
 });
-http.createServer((req, res) => res.end('Bot is alive!')).listen(3000);
-//Intialize slash command
-await refreshSlashCommand();
+app.use('/', (req, res) => {
+    res.send('Bot is listening');
+});
+const start = async () => {
+    try {
+        await refreshSlashCommand();
+        app.listen(PORT, () => {
+            console.log('Bot is working');
+        });
+    }
+    catch (error) {
+        console.log(error);
+    }
+};
+start();
 client.login(process.env.TOKEN);
 client.on('ready', async (message) => {
     console.log(`Loggin as ${client.user.tag}`);
