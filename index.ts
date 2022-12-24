@@ -8,8 +8,12 @@ import {
   getVisualNovelDetailEvent,
   getVisualNovelScreenshots,
   getVisualNovelTags,
+  getVisualNovelReleases,
+  searchUserEvent,
+  searchUserList,
 } from './src/event/index.js';
 import { refreshSlashCommand } from './src/function/refreshSlashCommand.js';
+
 
 const PORT = 3000 || process.env.PORT;
 const client = new Client({
@@ -46,8 +50,11 @@ client.on('ready', async (message) => {
 client.on('interactionCreate', async (interaction) => {
   if (interaction.isChatInputCommand()) {
     switch (interaction.commandName) {
-      case 'search_vn':
+      case 'vn_search':
         searchVNEvent(interaction);
+        break;
+      case 'vn_user_search':
+        searchUserEvent(interaction);
         break;
       default:
         break;
@@ -61,6 +68,10 @@ client.on('interactionCreate', async (interaction) => {
       getVisualNovelScreenshots(interaction);
     } else if (interaction.customId.includes('Tags')) {
       getVisualNovelTags(interaction);
+    } else if (interaction.customId.includes('Releases')) {
+      getVisualNovelReleases(interaction);
+    } else if (interaction.customId.includes('UserList_')) {
+      searchUserList(interaction);
     }
   }
 });

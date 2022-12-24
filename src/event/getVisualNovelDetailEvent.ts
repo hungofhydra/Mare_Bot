@@ -17,6 +17,14 @@ const convertMinuteToHour = (minutes) => {
   const playtime_minutes = minutes % 60;
   return `${playtime_hours.toString()} hours ${playtime_minutes.toString()} minutes`;
 };
+
+const convertDate = (date) => {
+  const day = date.split('-')[2];
+  const month = date.split('-')[1];
+  const year = date.split('-')[0];
+  return `${day}-${month}-${year}`;
+};
+
 export const getVisualNovelDetailEvent = async (
   interaction,
   method = 'update'
@@ -75,7 +83,9 @@ export const getVisualNovelDetailEvent = async (
       },
       {
         name: 'Release Day',
-        value: visualNovelDetail.released ? visualNovelDetail.released : 'None',
+        value: visualNovelDetail.released
+          ? convertDate(visualNovelDetail.released)
+          : 'None',
         inline: true,
       }
     )

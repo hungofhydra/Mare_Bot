@@ -25,3 +25,18 @@ export const queryVisualNovelById = async (visualNovelId: string) => {
   });
   return response.data.results;
 };
+
+export const queryVisualNovelReleases = async (visualNovelId: string) => {
+  let response = await axios({
+    url: `${process.env.VNDB_URL}/release`,
+    method: 'post',
+    data: {
+      filters: ['vn', '=', ['id', '=', visualNovelId]],
+      fields:
+        'id, title, platforms, languages.lang, extlinks.url, patch, released',
+      results: 100,
+      sort: 'released',
+    },
+  });
+  return response.data.results;
+};
