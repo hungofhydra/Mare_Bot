@@ -7,6 +7,7 @@ export const queryVisualNovelByName = async (visualNovelName: string) => {
     data: {
       filters: ['search', '=', visualNovelName],
       fields: 'title',
+      results: 25,
     },
   });
   return response.data.results;

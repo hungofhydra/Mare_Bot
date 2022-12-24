@@ -35,6 +35,12 @@ export const getVisualNovelScreenshots = async (interaction) => {
       .setLabel('Tags')
       .setStyle(ButtonStyle.Primary),
   ]);
+  choiceButtons.addComponents([
+    new ButtonBuilder()
+      .setCustomId(`Releases_${visualNovelId}`)
+      .setLabel('Releases')
+      .setStyle(ButtonStyle.Primary),
+  ]);
 
   const embedList = SFW_Screenshots.map((screenshot) => {
     return new EmbedBuilder()

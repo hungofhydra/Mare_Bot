@@ -9,7 +9,8 @@ export const searchVNEvent = async (interaction) => {
     //const choiceButtons = new ActionRowBuilder();
     if (resultList.length > 1) {
         const message = resultList.reduce((accumulator, currentValue, currentIndex) => {
-            if ((currentIndex + 1) % 5 === 0 && currentIndex > 2) {
+            if (((currentIndex + 1) % 5 === 0 && currentIndex > 0) ||
+                currentIndex + 1 === resultList.length) {
                 actionRowBuilder.addComponents(new ButtonBuilder()
                     .setCustomId(`VisualNovelSearchFirstInstance_${currentValue.id}`)
                     .setLabel((currentIndex + 1).toString())

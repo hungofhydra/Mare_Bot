@@ -35,6 +35,12 @@ export const getVisualNovelDetailEvent = async (interaction, method = 'update') 
             .setLabel('Tags')
             .setStyle(ButtonStyle.Primary),
     ]);
+    choiceButtons.addComponents([
+        new ButtonBuilder()
+            .setCustomId(`Releases_${visualNovelId}`)
+            .setLabel('Releases')
+            .setStyle(ButtonStyle.Primary),
+    ]);
     const embed = new EmbedBuilder()
         .setColor(0x0099ff)
         .setTitle(visualNovelDetail.title)
