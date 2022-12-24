@@ -43,7 +43,9 @@ export const getVisualNovelTags = async (interaction) => {
         .setTitle(visualNovelDetail.title)
         .setURL(`https://vndb.org/${visualNovelDetail.id}`)
         .setDescription(tagsInformation)
-        .setImage(visualNovelDetail.image.url)
+        .setImage(visualNovelDetail.image.url && visualNovelDetail.image.sexual === 0
+        ? visualNovelDetail.image.url
+        : 'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930')
         .setTimestamp();
     await interaction.update({
         embeds: [embed],

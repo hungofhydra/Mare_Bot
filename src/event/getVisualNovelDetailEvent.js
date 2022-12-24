@@ -52,8 +52,10 @@ export const getVisualNovelDetailEvent = async (interaction, method = 'update') 
         .setTitle(visualNovelDetail.title)
         .setURL(`https://vndb.org/${visualNovelDetail.id}`)
         .setDescription(visualNovelDetail.description
-        .replace('[spoiler]', '||')
-        .replace('[/spoiler]', '||'))
+        ? visualNovelDetail.description
+            .replace('[spoiler]', '||')
+            .replace('[/spoiler]', '||')
+        : ' ')
         .addFields({
         name: 'Alternative title',
         value: visualNovelDetail.alttitle ? visualNovelDetail.alttitle : 'None',
@@ -79,7 +81,9 @@ export const getVisualNovelDetailEvent = async (interaction, method = 'update') 
                 : 'None',
         inline: true,
     })
-        .setImage(visualNovelDetail.image.url)
+        .setImage(visualNovelDetail.image.url && visualNovelDetail.image.sexual === 0
+        ? visualNovelDetail.image.url
+        : 'https://upload.wikimedia.org/wikipedia/commons/1/14/No_Image_Available.jpg?20200913095930')
         .setTimestamp();
     switch (method) {
         case 'reply':

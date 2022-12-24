@@ -17,7 +17,7 @@ export const queryVisualNovelById = async (visualNovelId) => {
         method: 'post',
         data: {
             filters: ['id', '=', visualNovelId],
-            fields: 'title, alttitle ,image.url, length_minutes, description, rating, image.url, screenshots.url, tags.name, released, screenshots.sexual, length, tags.spoiler, tags.rating',
+            fields: 'title, alttitle ,image.url, length_minutes, description, rating, image.url, screenshots.url, tags.name, released, screenshots.sexual, length, tags.spoiler, tags.rating, image.sexual',
         },
     });
     return response.data.results;

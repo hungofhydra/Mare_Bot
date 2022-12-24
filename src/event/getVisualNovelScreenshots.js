@@ -34,10 +34,23 @@ export const getVisualNovelScreenshots = async (interaction) => {
             .setLabel('Releases')
             .setStyle(ButtonStyle.Primary),
     ]);
-    const embedList = SFW_Screenshots.map((screenshot) => {
-        return new EmbedBuilder()
-            .setURL('https://s2.vndb.org/sf/')
-            .setImage(screenshot.url);
-    });
-    await interaction.update({ embeds: embedList, components: [choiceButtons] });
+    if (SFW_Screenshots.length > 0) {
+        const embedList = SFW_Screenshots.map((screenshot) => {
+            return new EmbedBuilder()
+                .setURL('https://s2.vndb.org/sf/')
+                .setImage(screenshot.url);
+        });
+        await interaction.update({
+            embeds: embedList,
+            components: [choiceButtons],
+        });
+    }
+    else {
+        const embed = new EmbedBuilder()
+            .setColor(0x0099ff)
+            .setTitle('Vote List')
+            .setDescription('This visual novel has no images')
+            .setTimestamp();
+        await interaction.update({ embeds: [embed] });
+    }
 };
